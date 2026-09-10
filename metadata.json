@@ -1,0 +1,6 @@
+{
+  "name": "Ishan Gift & Cosmetics",
+  "description": "Premier luxury heritage boutique for fine gifts, cosmetics, skincare, imported perfumes, and bridal jewelry located at 243, M.G. Road (Opposite Bina Cinema), Budge Budge, Kolkata.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
