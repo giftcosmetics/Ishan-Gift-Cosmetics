@@ -70,23 +70,25 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
       id="hero-slider-section"
       className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#0A0A0A] pt-32 sm:pt-36 pb-16 px-4 sm:px-6 lg:px-10"
     >
-      {/* Upper Side Background: Royal Deer Showpiece - Crisp, Sharp, Non-Hazy */}
-      <div className="absolute inset-0 z-0">
+      {/* Upper Locked Background: Royal Emerald & Gold Deer Statues Showcase - High Visibility, Rich Atmosphere, NOT Black */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
           src={backgroundImage || images.hero}
-          alt="Ishan Gift & Cosmetics Royal Deer Showcase Backdrop"
-          className="w-full h-full object-cover object-center opacity-30 filter contrast-115 brightness-95"
+          alt="Ishan Gift & Cosmetics Royal Deer Masterpiece"
+          className="w-full h-full object-cover object-[center_32%] scale-105 transform-gpu transition-all duration-700 opacity-90 brightness-100 contrast-110"
         />
-        {/* Crisp linear vignettes to ensure pristine contrast and zero foggy blur */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/90 to-[#0A0A0A]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]/85" />
+        {/* Balanced optical overlay: Rich warm royal atmosphere that preserves the vivid emerald deer, the candle lanterns and golden halo while ensuring crisp readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0609]/90 via-[#0B0609]/55 to-[#0B0609]/15" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]/60" />
+        {/* Ambient warm champagne radial glow highlighting the deer showpiece on the right */}
+        <div className="absolute top-1/3 right-1/4 w-80 sm:w-[480px] h-80 sm:h-[480px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       <div className="relative z-20 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         {/* Left Column: Brand Hero Title & Details */}
         <div className="lg:col-span-6 space-y-5">
           {/* Refined Promotional Strip - Thinner, cleaner, more sophisticated */}
-          <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1 rounded-full border border-[#C9A227]/35 bg-[#121110] text-[10.5px] sm:text-[11px] tracking-[0.18em] font-sans uppercase text-[#D6B85A]">
+          <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1 rounded-full border border-[#C9A227]/35 bg-[#121110]/90 backdrop-blur-sm text-[10.5px] sm:text-[11px] tracking-[0.18em] font-sans uppercase text-[#D6B85A]">
             <Sparkles className="w-3 h-3 text-[#C9A227] shrink-0" />
             <span className="font-semibold text-[#F3F0E8]">Premier Boutique</span>
             <span className="text-[#C9A227]/40">•</span>
@@ -95,14 +97,18 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({
             <span className="text-[#A9A59C] hidden sm:inline">243, M.G. Road (Opp. Bina Cinema)</span>
           </div>
 
-          {/* Main Brand Title in Classic Luxury Heritage Serif */}
+          {/* Main Brand Title in Aesthetic Haute-Couture Luxury Typography */}
           <div className="space-y-2">
-            <h1 className="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[0.08em] text-[#F3F0E8] leading-[1.12]">
-              ISHAN <br />
-              <span className="text-[#C9A227]">GIFT &amp; COSMETICS</span>
+            <h1 className="font-ishan-brand text-3xl sm:text-5xl lg:text-6xl font-black tracking-[0.08em] sm:tracking-[0.11em] leading-[1.14] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FFFFFF] via-[#FFF3D1] to-[#E3C565]">
+                ISHAN
+              </span>
+              <span className="block font-ishan-brand text-2xl sm:text-4xl lg:text-[46px] font-bold tracking-[0.12em] sm:tracking-[0.16em] text-transparent bg-clip-text bg-gradient-to-r from-[#F0D278] via-[#C9A227] to-[#99731B] mt-1">
+                GIFT <span className="font-cormorant italic font-normal text-[#FDEAB3] text-3xl sm:text-5xl">&amp;</span> COSMETICS
+              </span>
             </h1>
-            <p className="font-cormorant italic text-[#D6B85A] text-lg sm:text-2xl font-normal tracking-wide">
-              Fine Beauty, Imported Fragrances &amp; Curated Keepsakes
+            <p className="font-cormorant italic text-[#E5C158] text-lg sm:text-2xl font-normal tracking-wide flex items-center gap-2 drop-shadow-md">
+              <span>Fine Beauty, Imported Fragrances &amp; Curated Keepsakes</span>
             </p>
           </div>
 

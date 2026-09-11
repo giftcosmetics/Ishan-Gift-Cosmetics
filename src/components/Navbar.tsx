@@ -127,8 +127,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
           <div className="flex flex-col justify-center">
-            <span className="font-cinzel text-base sm:text-lg lg:text-xl font-bold tracking-[0.14em] text-[#F3F0E8] group-hover:text-[#D6B85A] transition-colors whitespace-nowrap">
-              ISHAN <span className="text-[#C9A227]">GIFT &amp; COSMETICS</span>
+            <span className="font-ishan-brand text-base sm:text-lg lg:text-xl font-bold tracking-[0.1em] text-[#F3F0E8] group-hover:text-[#D6B85A] transition-colors whitespace-nowrap drop-shadow-sm">
+              <span className="text-white">ISHAN</span>{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0D278] via-[#C9A227] to-[#B38B22]">
+                GIFT <span className="font-cormorant italic font-normal text-[#FDEAB3] text-lg sm:text-xl">&amp;</span> COSMETICS
+              </span>
             </span>
             <span className="text-[9.5px] sm:text-[10px] font-sans uppercase tracking-[0.22em] text-[#A9A59C]">
               Premier Boutique &bull; Budge Budge, Kolkata

@@ -16,47 +16,68 @@
  * =======================================================================
  */
 
+import royalDeerHeroImage from '../assets/images/emerald_deer_1788950843652.jpg';
 import heroInteractiveSlideImage from '../assets/images/regenerated_image_1788973027464.png';
 import fragranceLoungeImage from '../assets/images/regenerated_image_1789033435803.png';
 import bridalVaultImage from '../assets/images/regenerated_image_1789033443548.png';
 import hamperWorkshopImage from '../assets/images/regenerated_image_1789033451279.png';
 
+/**
+ * Robust asset resolver that respects Vite's base path (e.g. on GitHub Pages or dev server)
+ */
+export function resolveAsset(path: string | undefined | null): string {
+  if (!path) return '';
+  if (
+    path.startsWith('data:') ||
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('blob:')
+  ) {
+    return path;
+  }
+  const clean = path.startsWith('/') ? path.slice(1) : path;
+  const base = import.meta.env.BASE_URL || '/';
+  return base.endsWith('/') ? `${base}${clean}` : `${base}/${clean}`;
+}
+
+export { royalDeerHeroImage };
+
 export const images = {
-  // Hero Background (Royal Deer showpiece background)
-  hero: '/assets/hero-main.jpg',
+  // Locked Hero Upper Background (Official Royal Emerald & Gold Deer Statues Showcase)
+  hero: royalDeerHeroImage,
 
   // Core Boutique Specialties
   giftBox: hamperWorkshopImage,
   perfume: fragranceLoungeImage,
-  cosmetics: '/assets/cosmetics.jpg',
+  cosmetics: resolveAsset('/assets/cosmetics.jpg'),
   jewelry: bridalVaultImage,
-  keepsakes: '/assets/keepsakes.jpg',
-  skincare: '/assets/skincare.jpg',
+  keepsakes: resolveAsset('/assets/keepsakes.jpg'),
+  skincare: resolveAsset('/assets/skincare.jpg'),
   storeShowcase: heroInteractiveSlideImage,
 
   // 10 Curated Boutique Categories (All 100% manual local images)
   categories: {
     perfumes: fragranceLoungeImage,
-    makeup: '/assets/cosmetics.jpg',
-    skincare: '/assets/skincare.jpg',
+    makeup: resolveAsset('/assets/cosmetics.jpg'),
+    skincare: resolveAsset('/assets/skincare.jpg'),
     artificialJewelry: bridalVaultImage,
     giftItems: hamperWorkshopImage,
-    hairCare: '/assets/skincare.jpg',
-    homeDecor: '/assets/keepsakes.jpg',
+    hairCare: resolveAsset('/assets/skincare.jpg'),
+    homeDecor: resolveAsset('/assets/keepsakes.jpg'),
     toys: hamperWorkshopImage,
     partySupplies: hamperWorkshopImage,
-    stationery: '/assets/keepsakes.jpg',
+    stationery: resolveAsset('/assets/keepsakes.jpg'),
   },
 
   // 7-Page Hero Slide Carousel (Slide 1 is the interactive slide card centerpiece)
   heroSlides: {
     slide1: heroInteractiveSlideImage,
-    slide2: '/assets/keepsakes.jpg',
+    slide2: resolveAsset('/assets/keepsakes.jpg'),
     slide3: bridalVaultImage,
     slide4: fragranceLoungeImage,
-    slide5: '/assets/cosmetics.jpg',
+    slide5: resolveAsset('/assets/cosmetics.jpg'),
     slide6: hamperWorkshopImage,
-    slide7: '/assets/skincare.jpg',
+    slide7: resolveAsset('/assets/skincare.jpg'),
   },
 
   // About Section & Flagship Showroom
@@ -64,20 +85,20 @@ export const images = {
     flagshipShowroom: heroInteractiveSlideImage,
     fragranceLounge: fragranceLoungeImage,
     bridalVault: bridalVaultImage,
-    cosmeticsStudio: '/assets/cosmetics.jpg',
+    cosmeticsStudio: resolveAsset('/assets/cosmetics.jpg'),
     hamperWorkshop: hamperWorkshopImage,
   },
 
   // Festive & Seasonal Offers
   offers: {
-    durgaPuja: '/assets/bridal-jewelry.jpg',
-    diwali: '/assets/gift-box.jpg',
-    valentines: '/assets/perfume.jpg',
-    bridalGlow: '/assets/skincare.jpg',
+    durgaPuja: resolveAsset('/assets/bridal-jewelry.jpg'),
+    diwali: resolveAsset('/assets/gift-box.jpg'),
+    valentines: resolveAsset('/assets/perfume.jpg'),
+    bridalGlow: resolveAsset('/assets/skincare.jpg'),
   },
 
   // Fallback image for new products or missing uploads
-  defaultFallback: '/assets/cosmetics.jpg',
+  defaultFallback: resolveAsset('/assets/cosmetics.jpg'),
 };
 
 export default images;

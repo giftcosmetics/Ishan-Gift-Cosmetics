@@ -44,8 +44,11 @@ export const Footer: React.FC<FooterProps> = ({
                 )}
               </div>
               <div>
-                <span className="font-ishan text-xl font-bold text-white tracking-wider">
-                  ISHAN <span className="gold-gradient-text">GIFT &amp; COSMETICS</span>
+                <span className="font-ishan-brand text-xl font-bold text-white tracking-[0.1em]">
+                  ISHAN{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F0D278] via-[#C9A227] to-[#B38B22]">
+                    GIFT <span className="font-cormorant italic font-normal text-[#FDEAB3] text-xl">&amp;</span> COSMETICS
+                  </span>
                 </span>
                 <div className="text-xs font-mono text-[#d4af37] uppercase tracking-wider">
                   Budge Budge, Kolkata

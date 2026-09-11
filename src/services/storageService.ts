@@ -7,7 +7,7 @@ import {
   INITIAL_REVIEWS,
   STORE_INFO,
 } from '../data/initialData';
-import { images } from '../config/images';
+import { images, resolveAsset } from '../config/images';
 import {
   cloudAddProduct,
   cloudUpdateProduct,
@@ -553,13 +553,19 @@ export function updateCategory(id: string, updates: Partial<Category>): void {
 // ==========================================
 export function getStoredHeroBackground(): string {
   if (cachedHeroBg && cachedHeroBg.trim().length > 0) {
-    return cachedHeroBg;
+    if (cachedHeroBg === '/assets/hero-main.jpg' || cachedHeroBg === '/assets/hero_deer_bg.jpg') {
+      return images.hero;
+    }
+    return resolveAsset(cachedHeroBg);
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.HERO_BACKGROUND);
     if (raw && raw.trim().length > 0) {
       cachedHeroBg = raw;
-      return raw;
+      if (raw === '/assets/hero-main.jpg' || raw === '/assets/hero_deer_bg.jpg') {
+        return images.hero;
+      }
+      return resolveAsset(raw);
     }
     return images.hero;
   } catch (e) {

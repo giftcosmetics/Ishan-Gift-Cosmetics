@@ -503,25 +503,25 @@ export const PhotoControlHub: React.FC<PhotoControlHubProps> = ({
               <span className="text-[11px] font-mono text-[#d4af37]">Full Website Cover</span>
             </div>
 
-            <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-[#d4af37]/30 bg-black shadow-2xl">
+            <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-[#d4af37]/40 bg-black shadow-2xl">
               <img
                 src={heroBackground || images.hero}
                 alt="Current Hero Background"
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-[center_30%] contrast-110 brightness-100"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/60" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/50" />
 
               {/* Mock Overlay of Header Elements */}
               <div className="absolute bottom-5 left-5 right-5 flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-white">
                 <div>
                   <div className="text-[10px] font-mono uppercase tracking-widest text-[#d4af37]">
-                    Live Display Simulation
+                    Live Display Simulation • Locked Upper Backdrop
                   </div>
-                  <div className="font-cinzel text-xl sm:text-2xl font-bold tracking-wider">
-                    ISHAN GIFT &amp; COSMETICS
+                  <div className="font-ishan-brand text-xl sm:text-2xl font-bold tracking-[0.1em]">
+                    ISHAN <span className="text-[#d4af37]">GIFT &amp; COSMETICS</span>
                   </div>
-                  <div className="text-xs text-stone-300 italic font-serif">
+                  <div className="text-xs text-stone-300 italic font-cormorant">
                     Fine Beauty, Imported Fragrances &amp; Curated Keepsakes
                   </div>
                 </div>

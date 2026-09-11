@@ -13,9 +13,24 @@
     letter-spacing: 0.04em;
   }
 
-  .font-ishan {
-    font-family: 'Cinzel Decorative', 'Playfair Display', 'Cinzel', serif;
-    letter-spacing: 0.08em;
+  /* Aesthetic Royal Boutique Brand Typography */
+  .font-ishan-brand, .font-ishan {
+    font-family: 'Cinzel Decorative', 'Italiana', 'Marcellus', 'Cinzel', serif;
+    letter-spacing: 0.1em;
+  }
+
+  .font-italiana {
+    font-family: 'Italiana', 'Playfair Display', Georgia, serif;
+    letter-spacing: 0.06em;
+  }
+
+  .font-marcellus {
+    font-family: 'Marcellus', 'Cinzel', serif;
+    letter-spacing: 0.05em;
+  }
+
+  .font-bodoni {
+    font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
   }
 
   .font-playfair {
