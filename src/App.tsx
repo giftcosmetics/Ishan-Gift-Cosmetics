@@ -66,7 +66,19 @@ export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
+  const [adminInitialTab, setAdminInitialTab] = useState<'photos' | 'inventory' | 'add-product' | 'slides' | 'offers' | 'data'>('photos');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleOpenAdmin = (
+    tab: 'photos' | 'inventory' | 'add-product' | 'slides' | 'offers' | 'data' = 'photos'
+  ) => {
+    setAdminInitialTab(tab);
+    if (isOwner) {
+      setIsAdminDashboardOpen(true);
+    } else {
+      setIsAdminLoginOpen(true);
+    }
+  };
 
   // Filter & Catalog States
   const [filterState, setFilterState] = useState<FilterState>({
@@ -230,13 +242,7 @@ export default function App() {
         isOwner={isOwner}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenAdmin={() => {
-          if (isOwner) {
-            setIsAdminDashboardOpen(true);
-          } else {
-            setIsAdminLoginOpen(true);
-          }
-        }}
+        onOpenAdmin={handleOpenAdmin}
         activeSection={activeSection}
         onNavigate={scrollToSection}
       />
@@ -633,12 +639,14 @@ export default function App() {
       {/* 11. Contact, Google Map & Store Visit */}
       <ContactSection storeInfo={storeInfo} />
 
-      {/* 12. Elegant Footer */}
+      {/* 12. Elegant Footer with Owner Panel in Help & Support */}
       <Footer
         storeInfo={storeInfo}
         categories={categories}
         onNavigate={scrollToSection}
         onSelectCategory={handleSelectCategory}
+        isOwner={isOwner}
+        onOpenAdmin={handleOpenAdmin}
       />
 
       {/* Modals & Overlays */}
@@ -690,6 +698,7 @@ export default function App() {
         slides={slides}
         offers={offers}
         heroBackground={heroBackground}
+        initialTab={adminInitialTab}
         onDataChanged={() => {
           setProducts(getStoredProducts());
           setCategories(getStoredCategories());

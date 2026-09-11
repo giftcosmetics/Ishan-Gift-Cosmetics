@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   X,
   PlusCircle,
@@ -52,6 +52,7 @@ interface AdminDashboardProps {
   slides: HeroSlide[];
   offers: Offer[];
   heroBackground?: string;
+  initialTab?: 'photos' | 'inventory' | 'add-product' | 'slides' | 'offers' | 'data';
   onDataChanged: () => void;
 }
 
@@ -63,9 +64,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   slides,
   offers,
   heroBackground,
+  initialTab,
   onDataChanged,
 }) => {
-  const [activeTab, setActiveTab] = useState<'photos' | 'inventory' | 'add-product' | 'slides' | 'offers' | 'data'>('photos');
+  const [activeTab, setActiveTab] = useState<'photos' | 'inventory' | 'add-product' | 'slides' | 'offers' | 'data'>(
+    initialTab || 'photos'
+  );
+
+  // Sync tab if opened with a specific section requested
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab, isOpen]);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
 
@@ -224,44 +235,46 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   return (
     <div
       id="owner-dashboard-overlay"
-      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col p-2 sm:p-6 overflow-hidden animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col p-0 sm:p-4 lg:p-6 overflow-hidden animate-in fade-in duration-200"
     >
-      <div className="w-full max-w-7xl mx-auto h-full bg-[#0d0e12] border border-[#d4af37]/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden">
-        {/* Top Bar */}
-        <div className="p-4 sm:p-5 border-b border-white/10 bg-stone-950 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#aa8214] p-0.5 shadow-md">
-              <div className="w-full h-full rounded-2xl bg-black flex items-center justify-center text-[#d4af37]">
-                <Package className="w-5 h-5" />
+      <div className="w-full max-w-7xl mx-auto h-full bg-[#0d0e12] border-0 sm:border border-[#d4af37]/30 rounded-none sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+        {/* Top Bar - Mobile Responsive */}
+        <div className="p-3 sm:p-5 border-b border-white/10 bg-stone-950 flex items-center justify-between gap-2 shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#d4af37] to-[#aa8214] p-0.5 shadow-md shrink-0">
+              <div className="w-full h-full rounded-xl sm:rounded-2xl bg-black flex items-center justify-center text-[#d4af37]">
+                <Package className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="font-cinzel text-base sm:text-lg font-bold text-white">
-                  Owner Management Dashboard
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-cinzel text-sm sm:text-lg font-bold text-white truncate">
+                  Owner Management
                 </h2>
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-medium">
-                  <Cloud className="w-3 h-3 text-emerald-400 animate-pulse" />
-                  <span>Cloud Backend Active &bull; Live to All Web Users</span>
+                <div className="hidden xs:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[9px] sm:text-[10px] font-medium shrink-0">
+                  <Cloud className="w-2.5 h-2.5 text-emerald-400 animate-pulse" />
+                  <span>Cloud Active</span>
                 </div>
               </div>
-              <p className="text-xs text-stone-400">
-                Ishan Gift & Cosmetics • 243, MG Road, Budge Budge, Kolkata
+              <p className="text-[10px] sm:text-xs text-stone-400 truncate">
+                Ishan Gift &amp; Cosmetics • Budge Budge, Kolkata
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={handleLogout}
-              className="px-3 py-1.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-500/30 text-xs font-medium flex items-center gap-1.5 transition-colors"
+              className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-500/30 text-[11px] sm:text-xs font-medium flex items-center gap-1.5 transition-colors"
+              title="Logout Owner"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Logout</span>
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 sm:p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Close Owner Panel"
             >
               <X className="w-5 h-5" />
             </button>
@@ -277,83 +290,89 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           onChange={handleTablePhotoChange}
         />
 
-        {/* Navigation Tabs */}
-        <div className="px-4 py-2.5 bg-black/60 border-b border-white/5 flex gap-2 overflow-x-auto scrollbar-none">
+        {/* Navigation Tabs - Touch Friendly Horizontal Scroll */}
+        <div className="px-3 sm:px-4 py-2 bg-black/60 border-b border-white/5 flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none shrink-0">
           <button
             onClick={() => setActiveTab('photos')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 ${
               activeTab === 'photos'
                 ? 'bg-[#d4af37] text-black font-semibold shadow-md'
                 : 'text-stone-300 hover:bg-white/5'
             }`}
           >
             <ImageIcon className="w-3.5 h-3.5" />
-            <span>All Photos Control (Background, Slides, Catalog)</span>
+            <span className="sm:hidden">Photos Hub</span>
+            <span className="hidden sm:inline">Photos Control (Hero, Slides, Catalog)</span>
           </button>
 
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 ${
               activeTab === 'inventory'
                 ? 'bg-[#d4af37] text-black font-semibold'
                 : 'text-stone-300 hover:bg-white/5'
             }`}
           >
             <Package className="w-3.5 h-3.5" />
-            <span>Product Catalog ({products.length})</span>
+            <span className="sm:hidden">Catalog ({products.length})</span>
+            <span className="hidden sm:inline">Product Catalog ({products.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('add-product')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 ${
               activeTab === 'add-product'
                 ? 'bg-[#d4af37] text-black font-semibold'
                 : 'text-stone-300 hover:bg-white/5'
             }`}
           >
             <PlusCircle className="w-3.5 h-3.5" />
-            <span>Add New Product (Camera Ready)</span>
+            <span className="sm:hidden">+ Add Item</span>
+            <span className="hidden sm:inline">Add Product (Camera Ready)</span>
           </button>
 
           <button
             onClick={() => setActiveTab('slides')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 ${
               activeTab === 'slides'
                 ? 'bg-[#d4af37] text-black font-semibold'
                 : 'text-stone-300 hover:bg-white/5'
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
-            <span>7-Page Hero Slider Upload</span>
+            <span className="sm:hidden">7 Slides</span>
+            <span className="hidden sm:inline">7-Page Hero Slider</span>
           </button>
 
           <button
             onClick={() => setActiveTab('offers')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 ${
               activeTab === 'offers'
                 ? 'bg-[#d4af37] text-black font-semibold'
                 : 'text-stone-300 hover:bg-white/5'
             }`}
           >
             <Tag className="w-3.5 h-3.5" />
-            <span>Manage Festival Offers</span>
+            <span className="sm:hidden">Offers</span>
+            <span className="hidden sm:inline">Festival Offers</span>
           </button>
 
           <button
             onClick={() => setActiveTab('data')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-2 transition-colors ${
+            className={`px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-colors shrink-0 ${
               activeTab === 'data'
                 ? 'bg-[#d4af37] text-black font-semibold'
                 : 'text-stone-300 hover:bg-white/5'
             }`}
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Backup / Import Data</span>
+            <span className="sm:hidden">Backup</span>
+            <span className="hidden sm:inline">Data &amp; Backup</span>
           </button>
         </div>
 
         {/* Tab Contents */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-stone-950/40">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-stone-950/40">
           {/* TAB 0: ALL PHOTOS & VISUALS CONTROL (BACKGROUND, SLIDES, CATEGORIES, PRODUCTS) */}
           {activeTab === 'photos' && (
             <PhotoControlHub
@@ -368,25 +387,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {activeTab === 'inventory' && (
             <div className="space-y-4">
               {/* Filter and Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
-                <div className="relative flex-1 max-w-md">
+              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-center justify-between">
+                <div className="relative flex-1">
                   <Search className="w-4 h-4 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by product name, category..."
+                    placeholder="Search catalog by name, brand, category..."
                     className="w-full pl-9 pr-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs sm:text-sm focus:outline-none focus:border-[#d4af37]"
                   />
                 </div>
 
-                <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                <div className="flex items-center gap-2 overflow-x-auto pb-0.5">
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="bg-[#0e1015] border border-white/15 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:border-[#d4af37]"
+                    className="flex-1 sm:flex-none bg-[#0e1015] border border-white/15 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:border-[#d4af37]"
                   >
-                    <option value="all">All Categories ({products.length})</option>
+                    <option value="all">All Departments ({products.length})</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.name}
@@ -396,16 +415,142 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
                   <button
                     onClick={() => setActiveTab('add-product')}
-                    className="px-4 py-2 rounded-xl gold-gradient-bg text-black font-semibold text-xs flex items-center gap-1.5 shadow-md shrink-0"
+                    className="px-3.5 py-2 rounded-xl gold-gradient-bg text-black font-semibold text-xs flex items-center gap-1.5 shadow-md shrink-0 active:scale-95 transition-all"
                   >
                     <PlusCircle className="w-3.5 h-3.5" />
-                    <span>Upload Product</span>
+                    <span>+ Add Product</span>
                   </button>
                 </div>
               </div>
 
-              {/* Responsive Product Table */}
-              <div className="border border-white/10 rounded-2xl overflow-hidden bg-[#0d0e12]">
+              {/* Mobile View: Dedicated Product Management Cards (md:hidden) */}
+              <div className="md:hidden space-y-3">
+                {filteredProducts.map((prod) => (
+                  <div
+                    key={prod.id}
+                    className="p-3 rounded-2xl bg-[#0d0e12] border border-white/10 space-y-2.5 shadow-md"
+                  >
+                    <div className="flex gap-3">
+                      {/* Product Photo with 1-Tap Camera Change */}
+                      <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-stone-900 border border-white/15 shrink-0">
+                        <img
+                          src={prod.images[0]}
+                          alt={prod.name}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTableTargetProdId(prod.id);
+                            tableProdFileInputRef.current?.click();
+                          }}
+                          className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-[#d4af37] active:bg-black/80 transition-colors"
+                          title="Tap to change photo"
+                        >
+                          <Camera className="w-4 h-4 text-[#d4af37]" />
+                          <span className="text-[9px] text-white font-medium">Change</span>
+                        </button>
+                      </div>
+
+                      {/* Product Details */}
+                      <div className="flex-1 min-w-0 flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-start justify-between gap-1">
+                            <h4 className="font-semibold text-white text-xs leading-snug line-clamp-2">
+                              {prod.name}
+                            </h4>
+                            <button
+                              onClick={() => {
+                                if (window.confirm(`Delete "${prod.name}" permanently?`)) {
+                                  deleteProduct(prod.id);
+                                  onDataChanged();
+                                }
+                              }}
+                              className="text-stone-500 hover:text-red-400 p-1 -mr-1 shrink-0"
+                              title="Delete product"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                            <span className="px-1.5 py-0.5 rounded bg-white/5 text-amber-200/90 font-mono text-[9px] uppercase">
+                              {prod.category.replace('-', ' ')}
+                            </span>
+                            {prod.isFeatured && (
+                              <span className="px-1.5 py-0.5 rounded bg-[#d4af37]/20 text-[#d4af37] text-[9px] font-semibold">
+                                Featured
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-1 text-xs">
+                          <div className="flex items-center gap-1.5 font-mono">
+                            <span className="font-bold text-white">₹{prod.offerPrice ?? prod.price}</span>
+                            {prod.offerPrice && (
+                              <span className="text-[10px] text-stone-500 line-through">₹{prod.price}</span>
+                            )}
+                          </div>
+                          <span
+                            className={`text-[10px] font-mono font-medium ${
+                              prod.stock <= 5 ? 'text-amber-400' : 'text-emerald-400'
+                            }`}
+                          >
+                            {prod.stock} in stock
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Mobile Action Bar */}
+                    <div className="pt-2 border-t border-white/5 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <label className="text-[10px] text-stone-400 font-medium">Stock:</label>
+                        <input
+                          type="number"
+                          defaultValue={prod.stock}
+                          onBlur={(e) => {
+                            const val = Number(e.target.value);
+                            if (val >= 0) updateProductStock(prod.id, val);
+                          }}
+                          className="w-14 px-2 py-1 rounded-lg bg-black/70 border border-white/15 text-white font-mono text-xs focus:border-[#d4af37] focus:outline-none"
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTableTargetProdId(prod.id);
+                            tableProdFileInputRef.current?.click();
+                          }}
+                          className="px-2.5 py-1.5 rounded-lg bg-[#d4af37]/15 text-[#d4af37] text-xs font-medium flex items-center gap-1 border border-[#d4af37]/30"
+                        >
+                          <Camera className="w-3 h-3" />
+                          <span>Photo</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setEditingProduct(prod)}
+                          className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium flex items-center gap-1 border border-white/10"
+                        >
+                          <Edit className="w-3 h-3 text-[#d4af37]" />
+                          <span>Edit</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {filteredProducts.length === 0 && (
+                  <div className="p-8 text-center text-stone-500 text-xs rounded-2xl bg-[#0d0e12] border border-white/5">
+                    No products found matching &ldquo;{searchQuery}&rdquo;
+                  </div>
+                )}
+              </div>
+
+              {/* Desktop View: Full Comprehensive Data Table (hidden md:block) */}
+              <div className="hidden md:block border border-white/10 rounded-2xl overflow-hidden bg-[#0d0e12]">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-stone-300">
                     <thead className="bg-stone-950 text-stone-400 uppercase text-[10px] tracking-wider border-b border-white/10">
@@ -759,7 +904,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               )}
 
               {/* Slide Number Tabs (1 to 7) */}
-              <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2">
                 {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                   <button
                     key={num}
@@ -770,14 +915,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         : 'bg-white/5 text-stone-300 hover:bg-white/10'
                     }`}
                   >
-                    Slide {num}
+                    <span className="hidden sm:inline">Slide </span>#{num}
                   </button>
                 ))}
               </div>
 
               {/* Current Slide Editor Card */}
               {currentSlideToEdit && (
-                <div className="bg-[#0e1015] border border-white/10 rounded-3xl p-6 space-y-5">
+                <div className="bg-[#0e1015] border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 space-y-5">
                   <div className="flex flex-col sm:flex-row gap-5 items-start">
                     {/* Slide Photo Preview & Replace */}
                     <div className="w-full sm:w-1/2 space-y-3">
@@ -1038,11 +1183,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* Edit Product Sub-Modal */}
       {editingProduct && (
         <div
-          className="fixed inset-0 z-60 bg-black/85 flex items-center justify-center p-4"
+          className="fixed inset-0 z-60 bg-black/85 flex items-center justify-center p-2 sm:p-4"
           onClick={() => setEditingProduct(null)}
         >
           <div
-            className="w-full max-w-xl max-h-[90vh] overflow-y-auto bg-[#0e1015] border border-[#d4af37]/40 rounded-3xl p-6 shadow-2xl space-y-4"
+            className="w-full max-w-xl max-h-[92dvh] overflow-y-auto bg-[#0e1015] border border-[#d4af37]/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">

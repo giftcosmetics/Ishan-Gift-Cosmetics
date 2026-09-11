@@ -273,65 +273,70 @@ export const PhotoControlHub: React.FC<PhotoControlHubProps> = ({
         </div>
 
         {/* Sub Navigation Pills */}
-        <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap gap-2">
+        <div className="mt-4 pt-3 border-t border-white/10 flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
           <button
             onClick={() => setSubTab('logo')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-all shrink-0 ${
               subTab === 'logo'
-                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20 scale-102'
+                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
                 : 'bg-white/5 text-stone-300 hover:bg-white/10'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Store Logo & Brand Mark</span>
+            <span className="sm:hidden">Logo</span>
+            <span className="hidden sm:inline">Store Logo &amp; Brand</span>
           </button>
 
           <button
             onClick={() => setSubTab('background')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-all shrink-0 ${
               subTab === 'background'
-                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20 scale-102'
+                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
                 : 'bg-white/5 text-stone-300 hover:bg-white/10'
             }`}
           >
             <ImageIcon className="w-3.5 h-3.5" />
-            <span>1. Hero Background Image</span>
+            <span className="sm:hidden">Background</span>
+            <span className="hidden sm:inline">1. Hero Background</span>
           </button>
 
           <button
             onClick={() => setSubTab('slides')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-all shrink-0 ${
               subTab === 'slides'
-                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20 scale-102'
+                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
                 : 'bg-white/5 text-stone-300 hover:bg-white/10'
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
-            <span>2. Slide Page Images (1 to 7)</span>
+            <span className="sm:hidden">7 Slides</span>
+            <span className="hidden sm:inline">2. Slide Pages (1 to 7)</span>
           </button>
 
           <button
             onClick={() => setSubTab('categories')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-all shrink-0 ${
               subTab === 'categories'
-                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20 scale-102'
+                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
                 : 'bg-white/5 text-stone-300 hover:bg-white/10'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            <span>3. Product Catalog Categories (10)</span>
+            <span className="sm:hidden">Categories</span>
+            <span className="hidden sm:inline">3. Catalog Categories (10)</span>
           </button>
 
           <button
             onClick={() => setSubTab('products')}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex items-center gap-1.5 sm:gap-2 transition-all shrink-0 ${
               subTab === 'products'
-                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20 scale-102'
+                ? 'bg-[#d4af37] text-black shadow-lg shadow-[#d4af37]/20'
                 : 'bg-white/5 text-stone-300 hover:bg-white/10'
             }`}
           >
             <Package className="w-3.5 h-3.5" />
-            <span>4. Product Catalog Images</span>
+            <span className="sm:hidden">Products ({products.length})</span>
+            <span className="hidden sm:inline">4. Product Images ({products.length})</span>
           </button>
         </div>
       </div>
