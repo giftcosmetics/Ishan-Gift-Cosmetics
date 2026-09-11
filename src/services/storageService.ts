@@ -8,6 +8,24 @@ import {
   STORE_INFO,
 } from '../data/initialData';
 import { images } from '../config/images';
+import {
+  cloudAddProduct,
+  cloudUpdateProduct,
+  cloudDeleteProduct,
+  cloudSaveCategory,
+  cloudSaveSlide,
+  cloudSaveOffer,
+  cloudDeleteOffer,
+  cloudSaveStoreInfo,
+  cloudSaveHeroBackground,
+  startFirestoreRealtimeSync,
+  getCloudSyncStatus,
+  subscribeToSyncStatus,
+  CloudSyncStatus,
+} from './firebaseSync';
+
+export { getCloudSyncStatus, subscribeToSyncStatus };
+export type { CloudSyncStatus };
 
 const STORAGE_KEYS = {
   PRODUCTS: 'ishan_products_v4',
@@ -226,6 +244,55 @@ async function hydrateFromIndexedDB(): Promise<void> {
 
 if (typeof window !== 'undefined') {
   hydrateFromIndexedDB();
+
+  // Connect to live Firebase Firestore backend
+  startFirestoreRealtimeSync({
+    onProducts: (products) => {
+      cachedProducts = products;
+      idbSet(STORAGE_KEYS.PRODUCTS, products);
+      try {
+        safeSetItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+      } catch (e) {}
+      notifyListeners();
+    },
+    onCategories: (categories) => {
+      cachedCategories = categories;
+      idbSet(STORAGE_KEYS.CATEGORIES, categories);
+      try {
+        safeSetItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories));
+      } catch (e) {}
+      notifyListeners();
+    },
+    onSlides: (slides) => {
+      cachedSlides = slides;
+      idbSet(STORAGE_KEYS.SLIDES, slides);
+      try {
+        safeSetItem(STORAGE_KEYS.SLIDES, JSON.stringify(slides));
+      } catch (e) {}
+      notifyListeners();
+    },
+    onOffers: (offers) => {
+      cachedOffers = offers;
+      idbSet(STORAGE_KEYS.OFFERS, offers);
+      try {
+        safeSetItem(STORAGE_KEYS.OFFERS, JSON.stringify(offers));
+      } catch (e) {}
+      notifyListeners();
+    },
+    onStoreInfo: (info) => {
+      try {
+        safeSetItem(STORAGE_KEYS.STORE_INFO, JSON.stringify(info));
+      } catch (e) {}
+      notifyListeners();
+    },
+    onHeroBackground: (bg) => {
+      if (bg && bg.trim()) {
+        cachedHeroBg = bg;
+        idbSet(STORAGE_KEYS.HERO_BACKGROUND, bg);
+        notifyListeners();
+      }
+    },
+  });
 }
 
 // ==========================================
@@ -278,6 +345,8 @@ export function addProduct(product: Omit<Product, 'id' | 'createdAt'>): Product 
   };
   const updated = [newProduct, ...products];
   saveProducts(updated);
+  // Persist to Cloud Firestore so all web users see it instantly
+  cloudAddProduct(newProduct);
   return newProduct;
 }
 
@@ -287,6 +356,8 @@ export function updateProduct(id: string, updates: Partial<Product>): Product | 
   if (index === -1) return null;
   products[index] = { ...products[index], ...updates };
   saveProducts(products);
+  // Persist updates to Cloud Firestore
+  cloudUpdateProduct(id, updates);
   return products[index];
 }
 
@@ -295,6 +366,8 @@ export function deleteProduct(id: string): boolean {
   const filtered = products.filter((p) => p.id !== id);
   if (filtered.length !== products.length) {
     saveProducts(filtered);
+    // Delete from Cloud Firestore
+    cloudDeleteProduct(id);
     return true;
   }
   return false;
@@ -360,6 +433,9 @@ export function updateSlide(pageNumber: number, updates: Partial<HeroSlide>): vo
     } catch (e) {
       console.warn('LocalStorage updateSlide fallback to IDB:', e);
     }
+
+    // Persist to Cloud Firestore
+    cloudSaveSlide(slides[index]);
   }
 }
 
@@ -370,6 +446,7 @@ export function resetSlidesToDefault(): void {
   try {
     safeSetItem(STORAGE_KEYS.SLIDES, JSON.stringify(INITIAL_HERO_SLIDES));
   } catch (e) {}
+  INITIAL_HERO_SLIDES.forEach((slide) => cloudSaveSlide(slide));
 }
 
 // ==========================================
@@ -410,6 +487,7 @@ export function updateOffer(id: string, updates: Partial<Offer>): void {
   if (idx !== -1) {
     offers[idx] = { ...offers[idx], ...updates };
     saveOffers(offers);
+    cloudSaveOffer(offers[idx]);
   }
 }
 
@@ -417,11 +495,13 @@ export function addOffer(offer: Omit<Offer, 'id'>): void {
   const offers = getStoredOffers();
   const newOffer = { ...offer, id: 'offer-' + Date.now() };
   saveOffers([newOffer, ...offers]);
+  cloudSaveOffer(newOffer);
 }
 
 export function deleteOffer(id: string): void {
   const offers = getStoredOffers();
   saveOffers(offers.filter((o) => o.id !== id));
+  cloudDeleteOffer(id);
 }
 
 // ==========================================
@@ -464,6 +544,7 @@ export function updateCategory(id: string, updates: Partial<Category>): void {
   if (idx !== -1) {
     categories[idx] = { ...categories[idx], ...updates };
     saveCategories(categories);
+    cloudSaveCategory(categories[idx]);
   }
 }
 
@@ -499,6 +580,9 @@ export function saveHeroBackground(bgImage: string): void {
   } catch (e) {
     console.warn('LocalStorage saveHeroBackground fallback to IDB:', e);
   }
+
+  // Persist to Cloud Firestore
+  cloudSaveHeroBackground(bgImage);
 }
 
 export function resetHeroBackground(): void {
@@ -510,6 +594,7 @@ export function resetHeroBackground(): void {
   } catch (e) {
     console.warn('Failed to reset hero background in localStorage:', e);
   }
+  cloudSaveHeroBackground(images.hero);
 }
 
 // ==========================================
@@ -555,6 +640,7 @@ export function saveStoreInfo(info: StoreInfo): void {
   try {
     safeSetItem(STORAGE_KEYS.STORE_INFO, JSON.stringify(info));
     notifyListeners();
+    cloudSaveStoreInfo(info);
   } catch (e) {
     console.error('Failed to save store info:', e);
   }
@@ -566,6 +652,7 @@ export function saveStoreLogo(logoUrlOrBase64: string): void {
     const updated: StoreInfo = { ...current, logo: logoUrlOrBase64 };
     safeSetItem(STORAGE_KEYS.STORE_INFO, JSON.stringify(updated));
     notifyListeners();
+    cloudSaveStoreInfo(updated);
   } catch (e) {
     console.error('Failed to save logo:', e);
   }
@@ -577,6 +664,7 @@ export function resetStoreLogo(): void {
     const updated: StoreInfo = { ...current, logo: STORE_INFO.logo };
     safeSetItem(STORAGE_KEYS.STORE_INFO, JSON.stringify(updated));
     notifyListeners();
+    cloudSaveStoreInfo(updated);
   } catch (e) {
     console.error('Failed to reset logo:', e);
   }

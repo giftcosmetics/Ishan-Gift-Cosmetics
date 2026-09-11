@@ -14,6 +14,7 @@ import {
   RotateCcw,
   CheckCircle2,
   AlertCircle,
+  Cloud,
 } from 'lucide-react';
 import { Category, HeroSlide, Product } from '../../types';
 import {
@@ -250,11 +251,15 @@ export const PhotoControlHub: React.FC<PhotoControlHubProps> = ({
               Change All Images &amp; Visuals
             </h3>
             <p className="text-xs text-stone-300 mt-1">
-              Full control over Hero Background, 7 Homepage Slides, 10 Catalog Categories, and all Product Photos.
+              Full control over Brand Logo, Hero Background, 7 Homepage Slides, 10 Catalog Categories, and all Product Photos. Stored on Cloud Server &amp; visible to all web users.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
+            <span className="px-3 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-[11px] font-mono text-emerald-300 flex items-center gap-1.5">
+              <Cloud className="w-3 h-3 text-emerald-400" />
+              Cloud Synced
+            </span>
             <span className="px-3 py-1.5 rounded-xl bg-black/60 border border-white/10 text-[11px] font-mono text-stone-300">
               {products.length} Products
             </span>

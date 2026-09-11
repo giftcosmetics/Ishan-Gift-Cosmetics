@@ -20,6 +20,8 @@ import {
   TrendingUp,
   Image as ImageIcon,
   Layers,
+  Cloud,
+  Database,
 } from 'lucide-react';
 import { Product, HeroSlide, Offer, Category } from '../../types';
 import {
@@ -37,6 +39,7 @@ import {
   exportCatalogJson,
   importCatalogJson,
   resetCatalogToDefault,
+  getCloudSyncStatus,
 } from '../../services/storageService';
 import { images } from '../../config/images';
 import { PhotoControlHub } from './PhotoControlHub';
@@ -237,9 +240,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <h2 className="font-cinzel text-base sm:text-lg font-bold text-white">
                   Owner Management Dashboard
                 </h2>
-                <span className="bg-emerald-950 text-emerald-400 text-[10px] font-mono px-2 py-0.5 rounded-full border border-emerald-500/40">
-                  Online
-                </span>
+                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-medium">
+                  <Cloud className="w-3 h-3 text-emerald-400 animate-pulse" />
+                  <span>Cloud Backend Active &bull; Live to All Web Users</span>
+                </div>
               </div>
               <p className="text-xs text-stone-400">
                 Ishan Gift & Cosmetics • 243, MG Road, Budge Budge, Kolkata
@@ -532,11 +536,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {activeTab === 'add-product' && (
             <div className="max-w-3xl mx-auto bg-[#0e1015] border border-[#d4af37]/30 rounded-3xl p-6 sm:p-8 shadow-2xl">
               <div className="mb-6">
-                <h3 className="font-cinzel text-xl font-bold text-white">
-                  Add New Product to Store
-                </h3>
+                <div className="flex items-center justify-between gap-2 flex-wrap mb-1">
+                  <h3 className="font-cinzel text-xl font-bold text-white">
+                    Add New Product to Store
+                  </h3>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[11px] font-medium">
+                    <Cloud className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Cloud Backend Live Storage</span>
+                  </div>
+                </div>
                 <p className="text-xs text-stone-400 mt-1">
-                  Upload directly via your phone camera or computer. Instantly visible in the catalog!
+                  Upload item photos and name directly via your phone camera or computer. Saved to the cloud backend server and instantly shown to all web users in real-time!
                 </p>
               </div>
 

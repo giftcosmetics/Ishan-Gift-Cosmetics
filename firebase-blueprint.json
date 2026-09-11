@@ -1,0 +1,101 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Store items with name, price, images, description visible to all web users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "inStock": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "description": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "name", "category", "price", "images"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product categories",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "banglaName": { "type": "string" },
+        "icon": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string" },
+        "itemCount": { "type": "number" }
+      },
+      "required": ["id", "name"]
+    },
+    "HeroSlide": {
+      "title": "HeroSlide",
+      "description": "Homepage promotional slides",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "pageNumber": { "type": "number" },
+        "title": { "type": "string" },
+        "highlight": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "badge": { "type": "string" },
+        "image": { "type": "string" },
+        "ctaText": { "type": "string" },
+        "ctaCategory": { "type": "string" }
+      },
+      "required": ["id", "pageNumber", "title", "image"]
+    },
+    "Offer": {
+      "title": "Offer",
+      "description": "Promotional offers and festival discounts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "discount": { "type": "string" },
+        "validTill": { "type": "string" },
+        "code": { "type": "string" }
+      },
+      "required": ["id", "title"]
+    },
+    "StoreSettings": {
+      "title": "StoreSettings",
+      "description": "Global store configuration and theme settings",
+      "type": "object",
+      "properties": {
+        "storeInfo": { "type": "object" },
+        "heroBackground": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "entity": "Product",
+      "description": "All web visitors can read products. Owner can create, edit and delete products."
+    },
+    "/categories/{categoryId}": {
+      "entity": "Category",
+      "description": "Catalog categories visible to all users."
+    },
+    "/slides/{slideId}": {
+      "entity": "HeroSlide",
+      "description": "Homepage hero slides."
+    },
+    "/offers/{offerId}": {
+      "entity": "Offer",
+      "description": "Special festival offers and discount codes."
+    },
+    "/store_settings/{settingId}": {
+      "entity": "StoreSettings",
+      "description": "Store branding and background images."
+    }
+  }
+}
